@@ -25,12 +25,13 @@ namespace executor_test
         short_opt.callback_group = callback_group_short_;
 
         // timer.
-        long_timer_ = this->create_wall_timer(1s, std::bind(&CallbackGroupBasedSampleNode::count_long_elapsed_time, this), callback_group_long_);
-        short_timer_ = this->create_wall_timer(200ms, std::bind(&CallbackGroupBasedSampleNode::count_short_elapsed_time, this), callback_group_short_);
+        // long_timer_ = this->create_wall_timer(0.5s, std::bind(&CallbackGroupBasedSampleNode::count_long_elapsed_time, this), callback_group_long_);
+	//
+        // short_timer_ = this->create_wall_timer(200ms, std::bind(&CallbackGroupBasedSampleNode::count_short_elapsed_time, this), callback_group_short_);
         // subscriber.
         msg_sub_ = this->create_subscription<std_msgs::msg::String>("cg_message", 1, std::bind(&CallbackGroupBasedSampleNode::print_sub_message, this, _1), short_opt);
         // publisher.
-        msg_pub_ = this->create_publisher<std_msgs::msg::String>("cg_message", 10);
+        // msg_pub_ = this->create_publisher<std_msgs::msg::String>("cg_message", 10);
     }
 
     void CallbackGroupBasedSampleNode::count_long_elapsed_time()
@@ -50,9 +51,10 @@ namespace executor_test
 
     void CallbackGroupBasedSampleNode::print_sub_message(const std_msgs::msg::String::SharedPtr msg)
     {
-        print_count_common("Subscriber", counter_called_subscriber);
-        RCLCPP_INFO(this->get_logger(), "Subscribed Message: %s", msg->data.c_str());
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        // print_count_common("Subscriber", counter_called_subscriber);
+        RCLCPP_INFO(this->get_logger(), "Subscribed Message Start: %s", msg->data.c_str());
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        RCLCPP_INFO(this->get_logger(), "Subscribed Message End: %s", msg->data.c_str());
     }
 
     void CallbackGroupBasedSampleNode::print_count_common(const std::string & callback_name, 
